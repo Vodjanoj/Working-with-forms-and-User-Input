@@ -10,11 +10,17 @@ const SimpleInput = (props) => {
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
+
+    if (enteredName.trim() === "") {  // trim() is to remove any excess white space at the beginning and end.
+      return;
+    }
+
     console.log(enteredName);
+
     const enteredValue = nameInputRef.current.value;
-    console.log(enteredValue);
+
     // nameInputRef.current.value = '', => not ideal, don't manipulate the dom
-    setEnteredName(''); // if you want to reset entered value use useState
+    setEnteredName(""); // if you want to reset entered value use useState
   };
 
   return (
