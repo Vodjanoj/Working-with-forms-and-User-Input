@@ -1,9 +1,16 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SimpleInput = (props) => {
   const nameInputRef = useRef();
   const [enteredName, setEnteredName] = useState("");
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(true);
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+
+  useEffect(() => {
+    if (enteredNameIsValid) {
+      console.log("Name Input is Valid");
+    }
+  }, [enteredNameIsValid]);
 
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
@@ -11,6 +18,8 @@ const SimpleInput = (props) => {
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
+
+    setEnteredNameTouched(true);
 
     if (enteredName.trim() === "") {
       // trim() is to remove any excess white space at the beginning and end.
@@ -28,9 +37,11 @@ const SimpleInput = (props) => {
     setEnteredName(""); // if you want to reset entered value use useState
   };
 
-  const nameInputClasses = enteredNameIsValid
-    ? "form-control"
-    : "form-control invalid";
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; // because only if it was touched and it's then is invalid I wanna treat it as invalid(nameInputIsInvalid)
+
+  const nameInputClasses = nameInputIsInvalid
+    ? "form-control invalid"
+    : "form-control";
 
   return (
     <form onSubmit={formSubmissionHandler}>
@@ -44,7 +55,7 @@ const SimpleInput = (props) => {
           value={enteredName}
         />
       </div>
-      {!enteredNameIsValid && (
+      {nameInputIsInvalid && (
         <p className="error-text">Name must not be empty</p>
       )}
       <div className="form-actions">
