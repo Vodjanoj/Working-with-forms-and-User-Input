@@ -5,8 +5,11 @@ const SimpleInput = (props) => {
   const [enteredNameTouched, setEnteredNameTouched] = useState(false);
 
   const enteredNameIsValid = enteredName.trim() !== "";
+  console.log('enteredNameIsValid ' + enteredNameIsValid);
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; // because only if it was touched and it's then is invalid I wanna treat it as invalid(nameInputIsInvalid)
+  
 
+   console.log(nameInputIsInvalid);
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
   };
@@ -36,6 +39,8 @@ const SimpleInput = (props) => {
                                  //it of course, should again act as if it wasn't touched at all because it's a brand new form now in the end.
 
   };
+
+  console.log(nameInputIsInvalid);
 
   const nameInputClasses = nameInputIsInvalid
     ? "form-control invalid"
