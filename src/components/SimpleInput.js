@@ -5,11 +5,17 @@ const SimpleInput = (props) => {
   const [enteredNameTouched, setEnteredNameTouched] = useState(false);
 
   const enteredNameIsValid = enteredName.trim() !== "";
-  console.log('enteredNameIsValid ' + enteredNameIsValid);
+  console.log("enteredNameIsValid " + enteredNameIsValid);
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; // because only if it was touched and it's then is invalid I wanna treat it as invalid(nameInputIsInvalid)
-  
+  console.log("!enteredNameIsValid " + !enteredNameIsValid);
 
-   console.log(nameInputIsInvalid);
+  let formIsValid = false;
+
+  // I'm interested in the validity of my form inputs and hence I'll add all the form input validities I have in this form here.
+  if (enteredNameIsValid) {
+    formIsValid = true;
+  }
+
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
   };
@@ -29,18 +35,13 @@ const SimpleInput = (props) => {
       return;
     }
 
-     
-
-    console.log(enteredName);
-
     // nameInputRef.current.value = '', => not ideal, don't manipulate the dom
     setEnteredName(""); // if you want to reset entered value use useState
-    setEnteredNameTouched(false); // I want to set setEnteredNameTouched to false to reset the touched state, because once the form is submitted, 
-                                 //it of course, should again act as if it wasn't touched at all because it's a brand new form now in the end.
-
+    setEnteredNameTouched(false); // I want to set setEnteredNameTouched to false to reset the touched state, because once the form is submitted,
+    //it of course, should again act as if it wasn't touched at all because it's a brand new form now in the end.
   };
 
-  console.log(nameInputIsInvalid);
+  console.log("nameInputIsInvalid " + nameInputIsInvalid);
 
   const nameInputClasses = nameInputIsInvalid
     ? "form-control invalid"
@@ -62,7 +63,7 @@ const SimpleInput = (props) => {
         <p className="error-text">Name must not be empty</p>
       )}
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
