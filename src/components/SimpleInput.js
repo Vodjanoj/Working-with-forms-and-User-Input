@@ -4,15 +4,20 @@ const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredNameTouched, setEnteredNameTouched] = useState(false);
 
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
+
   const enteredNameIsValid = enteredName.trim() !== "";
-  console.log("enteredNameIsValid " + enteredNameIsValid);
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; // because only if it was touched and it's then is invalid I wanna treat it as invalid(nameInputIsInvalid)
-  console.log("!enteredNameIsValid " + !enteredNameIsValid);
+  console.log("nameInputIsInvalid " + nameInputIsInvalid);
+
+  const enteredEmailIsValid = enteredEmail.includes("@");
+  const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
+  console.log("emailInputIsInvalid " + emailInputIsInvalid);
 
   let formIsValid = false;
 
-  // I'm interested in the validity of my form inputs and hence I'll add all the form input validities I have in this form here.
-  if (enteredNameIsValid) {
+  if (enteredNameIsValid && enteredEmailIsValid) {
     formIsValid = true;
   }
 
@@ -24,26 +29,36 @@ const SimpleInput = (props) => {
     setEnteredNameTouched(true);
   };
 
+  const emailInputChangeHandler = (event) => {
+    setEnteredEmail(event.target.value);
+  };
+
+  const emailInputBlurHandler = (event) => {
+    setEnteredEmailTouched(true);
+  };
+
   const formSubmissionHandler = (event) => {
     event.preventDefault();
 
     setEnteredNameTouched(true);
 
-    if (!enteredNameIsValid) {
-      // trim() is to remove any excess white space at the beginning and end.
-
+    if (!enteredNameIsValid && !enteredEmailIsValid) {
       return;
     }
 
     // nameInputRef.current.value = '', => not ideal, don't manipulate the dom
     setEnteredName(""); // if you want to reset entered value use useState
     setEnteredNameTouched(false); // I want to set setEnteredNameTouched to false to reset the touched state, because once the form is submitted,
-    //it of course, should again act as if it wasn't touched at all because it's a brand new form now in the end.
+                                  //it of course, should again act as if it wasn't touched at all because it's a brand new form now in the end.
+    setEnteredEmail("");
+    setEnteredEmailTouched(false);
   };
 
-  console.log("nameInputIsInvalid " + nameInputIsInvalid);
-
   const nameInputClasses = nameInputIsInvalid
+    ? "form-control invalid"
+    : "form-control";
+
+  const emailInputClasses = emailInputIsInvalid
     ? "form-control invalid"
     : "form-control";
 
@@ -58,10 +73,23 @@ const SimpleInput = (props) => {
           onBlur={nameInputBlurHandler}
           value={enteredName}
         />
+        {nameInputIsInvalid && (
+          <p className="error-text">Name must not be empty</p>
+        )}
       </div>
-      {nameInputIsInvalid && (
-        <p className="error-text">Name must not be empty</p>
-      )}
+      <div className={emailInputClasses}>
+        <label htmlFor="email">Your email</label>
+        <input
+          type="email"
+          id="email"
+          onChange={emailInputChangeHandler}
+          onBlur={emailInputBlurHandler}
+          value={enteredEmail}
+        />
+        {emailInputIsInvalid && (
+          <p className="error-text">Please enter a valid email</p>
+        )}
+      </div>
       <div className="form-actions">
         <button disabled={!formIsValid}>Submit</button>
       </div>
