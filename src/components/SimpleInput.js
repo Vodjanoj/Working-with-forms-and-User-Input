@@ -11,9 +11,6 @@ const SimpleInput = (props) => {
     reset: resetNameInput,
   } = useInput((value) => value.trim() !== "");
 
-  // const [enteredEmail, setEnteredEmail] = useState("");
-  // const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
-
   const {
     value: enteredEmail,
     isValid: enteredEmailIsValid,
